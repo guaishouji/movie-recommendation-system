@@ -2,8 +2,6 @@
 Python+Django
 # 
 
-[toc]
-
 ## 简单介绍
 
 很简单一个推荐系统，主要给自己练手，熟悉一下Django和Python，大概一个月完成，用的Django和Python都是3版本。
