@@ -9,7 +9,7 @@ import pandas as pd
 
 
 def homepages(request):
-    movie_list = Movie.objects.order_by('?')[:500]
+    movie_list = Movie.objects.order_by('?')[:500] #随机抽取500部
     # movie_list = Movie.objects.order_by('-pop')[:1000]
     context = filter_movie(movie_list)
     return render(request, 'homepage/homepages.html', context)
