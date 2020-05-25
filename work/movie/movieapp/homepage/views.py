@@ -9,12 +9,13 @@ import pandas as pd
 
 
 def homepages(request):
-    most_pop_list = Movie.objects.order_by('-pop')[:1000]
-    context = filter_movie(most_pop_list)
+    movie_list = Movie.objects.order_by('?')[:500]
+    # movie_list = Movie.objects.order_by('-pop')[:1000]
+    context = filter_movie(movie_list)
     return render(request, 'homepage/homepages.html', context)
 
 
-def filter_movie(pop_list):
+def filter_movie(movie_list):
     drama_list = []
     comedy_list = []
     thriller_list = []
@@ -22,7 +23,7 @@ def filter_movie(pop_list):
     adventure_list = []
     crime_list = []
     fantasy_list = []
-    for movie in pop_list:
+    for movie in movie_list:
         # movie_genres = Genres.objects.filter(movie_id=movie.movie_id)
         movie_dic = dict()
         movie_dic['movie_id'] = movie.movie_id
