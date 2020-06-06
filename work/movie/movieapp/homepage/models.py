@@ -17,15 +17,15 @@ class Movie(models.Model):
 
 class Users(models.Model):
     """用户表"""
-    gender = (
-        ('male', 'F'),
-        ('female', 'M'),
-    )
+    # gender = (
+    #     ('male', 'F'),
+    #     ('female', 'M'),
+    # )
     user_id = models.AutoField(primary_key=True, null=False)
     username = models.CharField(max_length=128, unique=True, null=False)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
-    gender = models.CharField(max_length=32, choices=gender, default='M')
+    # gender = models.CharField(max_length=32, choices=gender, default='M')
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Recommend(models.Model):
     id = models.AutoField(primary_key=True, null=False)
     user_id = models.IntegerField("用户Id")
     movie_id = models.IntegerField("电影Id", null=True)
-    movie_imdbId = models.IntegerField("imdbId", null=True)
+    movie_imdbId = models.CharField("imdbId", max_length=100, null=True)
     movie_title = models.CharField("电影标题", max_length=100, null=False)
     movie_img = models.CharField("电影图片", max_length=500)
 

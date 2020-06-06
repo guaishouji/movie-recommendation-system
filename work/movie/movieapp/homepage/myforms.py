@@ -20,10 +20,5 @@ class RegisterForm(forms.Form):
     # gender = forms.ChoiceField(label='性别', choices=gender)
     captcha = CaptchaField(label='验证码')
 
-# class RatingForm(forms.Form):
-#     user_id = forms.IntegerField(label="用户名" )
-#     movie_id
-#     movie_imdbId
-#     movie_rating
 
 

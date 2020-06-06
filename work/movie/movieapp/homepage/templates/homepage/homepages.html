@@ -3,7 +3,13 @@
 {% block content %}
 {% load static %}
 <style>
-
+    .box3 div p {
+        text-align:center;
+	    overflow: hidden;
+	    text-overflow:ellipsis;
+        white-space:nowrap;
+        max-width: 190px;
+     }
     .tab-content div p{
         text-align:center;
 	    overflow: hidden;
@@ -19,10 +25,22 @@
         margin:10px;
         margin:30px;
     }
-     .star{
+    h1{
+        display:inline-block;
+        margin-right:15px;
+        margin-left:15px;
+        }
+    .star{
 
-        text-align:center;
-     }
+       text-align:center;
+    }
+    input{
+        border-radius: 8px;
+    }
+    a img{
+        height:268px;
+        weight:182px;
+    }
 </style>
 <script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -57,28 +75,55 @@
         console.log(document.getElementById(this.id).getElementsByTagName("div")[0].innerHTML);
         $("#movie_imdbId").val(((document.getElementById(this.id)).getElementsByTagName("div")[0]).innerHTML);
         $("#user_id").val({{ request.session.user_id}});
-        console.log(({{ request.session.user_id}}));
+        console.log({{ request.session.user_id}});
   });
     });
 
 </script>
 {% if request.session.is_login %}
-<h1>您好,{{ request.session.user_name }}！请选择十部看过的电影进行评价！</h1>
-<h1><form action="/homepage/rating/" method="get" target="nm_iframe"  >
-    <input type="hidden" id = "rating", name="rating">
-    <input type="hidden"  id = "user_id", name="user_id">
-    <input type="hidden"  id = "movie_imdbId", name="movie_imdbId">
-    <input type="submit" value="提交评分">
-</form></h1>
-<h1><form action="/homepage/" >
-    <input type="submit" value="换其他电影">
-</form>
-
-</h1>
+    {% if not_found %}
+    <h1>没有找到关于 “{{ movie_title }}” 的电影，换个搜索词试试吧。</h1>
+    {% else %}
+        {% if searched_movies %}
+        <h1>搜索 {{ movie_title}}</h1>
+        {% elif not_rating %}
+        <h1>没有选择电影进行评分，请重新选择！</h1>
+        <h1><form action="/homepage/" >
+            <input type="submit" value="换一换">
+            </form>
+        </h1>
+        {% else %}
+        <h1>您好,{{ request.session.user_name }}！请选择十部看过的电影进行评价！</h1>
+        <h1><form action="/homepage/" >
+            <input type="submit" value="换一换">
+            </form>
+        </h1>
+        {% endif %}
+        <h1><form action="/homepage/rating/" method="get" target="nm_iframe"  >
+            <input type="hidden" id = "rating", name="rating">
+            <input type="hidden"  id = "user_id", name="user_id">
+            <input type="hidden"  id = "movie_imdbId", name="movie_imdbId">
+            <input type="submit" value="提交评分">
+        </form></h1>
+    {% endif %}
 {% else %}
     <h1 align="center">你尚未登录，请登录后对电影进行评价！</h1>
 {% endif %}
 
+
+{% if searched_movies %}
+    <div class="box3" align="center" >
+        {% for movie in searched_movies %}
+        <div class="movie" >
+            <a href="https://www.imdb.com/title/tt{{ 'A000000'|add:movie.movie_imdbId|slice:'-7:' }}/" title="{{movie.movie_title}}" target ="_blank">
+                <img src="{{movie.movie_img}}"  alt="{{movie.movie_title}}" />
+                <p><strong>{{ movie.movie_title }}</strong></p>
+            </a>
+            <div class="star" id="{% cycle 'id85' 'id86' 'id87' 'id88' 'id89' 'id90' 'id91' 'id92' 'id93' 'id94' 'id95' 'id96' %}" ><div hidden >{{ movie.movie_imdbId }}</div></div>
+        </div>
+        {% endfor %}
+    </div>
+{% elif drama_list %}
 <ul class="nav nav-tabs nav-justified" >
     <li class="active"><a href="#tab0" data-toggle="tab">Drama</a></li>
     <li><a href="#tab1" data-toggle="tab">Comedy</a></li>
@@ -88,8 +133,6 @@
     <li><a href="#tab5" data-toggle="tab">Crime</a></li>
     <li><a href="#tab6" data-toggle="tab">Fantasy</a></li>
 </ul>
-
-
 <div class="tab-content">
     <div id="tab0" class="tab-pane fade in active">
         {% for movie in drama_list %}
@@ -170,6 +213,6 @@
         {% endfor %}
     </div>
 </div>
-
+{% endif %}
 
 {% endblock %}

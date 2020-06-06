@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     # ex:/homepage/1000/
     path('people<int:user_id>/', views.index, name='index'),
-    path('rating/', views.rating, name='rating')
+    path('rating/', views.rating, name='rating'),
+    path('search/', views.search, name='search')
 
 ]
